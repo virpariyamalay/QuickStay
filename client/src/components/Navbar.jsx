@@ -65,7 +65,7 @@ const Navbar = () => {
                         </a>
                     ))}
                     <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}
-                     click={()=>navigate('/owner')}>
+                     onClick={()=>navigate('/owner')}>
                         Dashboard
                     </button>
                 </div>
@@ -81,7 +81,7 @@ const Navbar = () => {
                         </UserButton.MenuItems>
                    </UserButton>)
                    :
-                   (<button onClick={openSignIn} className="bg-black text-white px-8 py-2.5 rounded-full ml-4 transition-all duration-500">
+                   (<button onClick={openSignIn} className="bg-black text-white px-8 py-2.5 rounded-full ml-4 transition-all duration-500 cursor-pointer">
                         Login
                     </button>)
                    }
@@ -116,12 +116,11 @@ const Navbar = () => {
                     ))}
 
                     {user && <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all"
-                    on
-                    click={()=>navigate('/owner')}>
+                    onClick={()=>navigate('/owner')}>
                         Dashboard
                     </button>}
 
-                    {!user && <button onClick={openSignIn} className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500">
+                    {!user && <button onClick={openSignIn} className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500 cursor-pointer">
                         Login
                     </button>}
                 </div>
