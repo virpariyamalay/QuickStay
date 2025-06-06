@@ -17,7 +17,10 @@ const FeacturedDestination = () => {
                 ))}
             </div>
 
-            <button onClick={()=>{navigate('/rooms'); scrollTo(0,0)} }>View All Destination</button>
+            <button onClick={()=>{navigate('/rooms'); scrollTo(0,0)}}
+            className='mt-10 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 cursor-pointer hover:scale-105' >
+            View All Destination
+            </button>
         </div>
     )
 }
