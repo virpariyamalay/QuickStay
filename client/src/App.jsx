@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './components/Navbar'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Home from './pages/Home';
+import Footer from './components/Footer';
 
 const App = () => {
   const isownerpath =useLocation().pathname.includes('/owner');
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
       </Routes>
       </div>
+      <Footer />
     </div>
   )
 }
