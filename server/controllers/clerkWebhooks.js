@@ -14,7 +14,7 @@ const clerkWebhooks= async (req,res)=>{
         };
 
         //verify headers
-        await whook.verify(json.stringify(req.body),headers);
+        await whook.verify(JSON.stringify(req.body),headers);
 
         //getting data from request body
         const{data,type}=req.body;
@@ -24,6 +24,7 @@ const clerkWebhooks= async (req,res)=>{
             email:data.email.addresses[0].email_address,
             username:data.first_name + " " +data.last_name,
             image:data.image_url,
+            recentSearchedCities: []
         }
 
 
