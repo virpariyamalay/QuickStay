@@ -43,7 +43,7 @@ const bookingSchema= new mongoose.Schema({
     default:"Pay At Hotel"
    },
    isPaid:{
-    type:Boolen,
+    type:Boolean,
     default:false
    }
 },{timestamps:true})
