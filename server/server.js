@@ -24,13 +24,14 @@ app.use(clerkMiddleware())
 //api to listen to clerk webhook    
 app.use("/api/clerk", clerkWebhooks);
 
+app.use('/api/user',userRouter);
+app.use('/api/hotels',hotelRouter);
+app.use('/api/rooms',roomRouter);
+app.use('/api/bookings',bookingRouter);
 app.use('/',(req,res)=>{
     res.send('api is working');
 })
-app.use('/api/user',userRouter);
-app.use('/api/hotel',hotelRouter);
-app.use('/api/rooms',roomRouter);
-app.use('/api/bookings',bookingRouter);
+
 
 
 const PORT=process.env.PORT || 3000;

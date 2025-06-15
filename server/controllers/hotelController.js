@@ -6,16 +6,21 @@ export const registerHotel = async(req,res)=>{
     try {
         
     const {name,contact,address,city}=req.body;
-    const owner=req.user_id;
+    const owner=req.user ? req.user._id : null;
+
+    if(!owner){
+        return res.json({success:false,message:"User not authenticated"});
+    }
 
     //check if user is already a hotel owner
     const hotel= await Hotel.findOne({owner});
     if(hotel){
-        res.json({success:flase,message:"Hotel Already Registered"});
+        res.json({success:false,message:"Hotel Already Registered"});
+        return;
     }
 
     else{
-        await Hotel.create({name,contact,address,city});
+        await Hotel.create({name,address,contact,city,owner});
         await User.findByIdAndUpdate(owner, {role:"hotelOwner"});   
         res.json({success:true,message:"Hotel Registered Successfully"});
     }
@@ -26,3 +31,4 @@ export const registerHotel = async(req,res)=>{
     
 
 }
+
