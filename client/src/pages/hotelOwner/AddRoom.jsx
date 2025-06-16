@@ -108,8 +108,8 @@ const AddRoom = () => {
           <select value={inputs.roomType} onChange={e => setInputs({ ...inputs, roomType: e.target.value })}
             className='border opacity-70 border-gray-300 mt-1 rounded p-2 w-full'>
             <option value="">Select Room Type</option>
-            <option value="Single Bad">Single Bad</option>
-            <option value="Double Bed">Double Bad</option>
+            <option value="Single Room">Single Room</option>
+            <option value="Double Room">Double Room</option>
             <option value="Luxury Room">Luxury Room</option>
             <option value="Family Suit">Family Suit</option>
           </select>
