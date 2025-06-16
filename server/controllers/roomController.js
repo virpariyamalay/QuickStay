@@ -1,3 +1,4 @@
+
 import Hotel from "../models/Hotel.js";
 import Room from "../models/Room.js";
 import { v2 as cloudinary} from 'cloudinary'
@@ -9,7 +10,7 @@ export const createRoom = async (req, res) =>{
         const {roomType,pricePerNight,amenities}=req.body;
         const hotel=await Hotel.findOne({owner:req.auth.userId});
         if(!hotel){
-            return res.json({success:false,message:"hotel not found"})
+            return res.JSON({success:false,message:"hotel not found"})
         }
 
         //upload image to cloudinary
@@ -25,7 +26,7 @@ export const createRoom = async (req, res) =>{
             hotel:hotel._id,
             roomType,
             pricePerNight:+pricePerNight,
-            amenities:json.parse(amenities),
+            amenities:JSON.parse(amenities),
             images,
         })
         res.json({success:true,message:"Room Created Successfully"})
