@@ -8,7 +8,7 @@ import RoomDetails from './pages/RoomDetails';
 import MyBookings from './pages/MyBookings';
 import HotelReg from './components/HotelReg';
 import Layout from './pages/hotelOwner/Layout';
-import DashBoard from './pages/hotelOwner/DashBoard';
+import DashBoard from './pages/hotelOwner/Dashboard';
 import AddRoom from './pages/hotelOwner/AddRoom';
 import ListRoom from './pages/hotelOwner/ListRoom';
 import {Toaster} from 'react-hot-toast'
