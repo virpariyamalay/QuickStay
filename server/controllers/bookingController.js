@@ -210,7 +210,7 @@ export const getHotelBookings = async (req, res) => {
         const bookings = await Booking.find({ hotel: hotel._id }).populate("room hotel user").sort({ createdAt: -1 })
 
         //total Bookings
-        const totalBookings = booking.length;
+        const totalBookings = bookings.length;
         //total revenue
         const totalRevenue = bookings.reduce((acc, booking) => acc + booking.totalPrice, 0)
 
