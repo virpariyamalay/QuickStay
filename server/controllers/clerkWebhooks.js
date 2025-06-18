@@ -19,13 +19,6 @@ const clerkWebhooks = async (req, res) => {
         //getting data from request body
         const { data, type } = req.body;
 
-        const userData = {
-            _id: data.id,
-            email: data.email_addresses[0].email_address,
-            username: data.first_name + " " + data.last_name,
-            image: data.image_url,
-            recentSearchedCities: []
-        }
 
         console.log("Webhook event type:", type);
         console.log("User data to be processed:", userData);
@@ -33,6 +26,14 @@ const clerkWebhooks = async (req, res) => {
         switch (type) {
             case "user.created": {
                 try {
+                    const userData = {
+                        _id: data.id,
+                        email: data.email_addresses[0].email_address,
+                        username: data.first_name + " " + data.last_name,
+                        image: data.image_url,
+                        recentSearchedCities: []
+                    }
+
                     await User.create(userData);
                     console.log("User created successfully");
                 } catch (err) {
@@ -44,6 +45,14 @@ const clerkWebhooks = async (req, res) => {
 
             case "user.updated": {
                 try {
+                    const userData = {
+                        _id: data.id,
+                        email: data.email_addresses[0].email_address,
+                        username: data.first_name + " " + data.last_name,
+                        image: data.image_url,
+                        recentSearchedCities: []
+                    }
+
                     await User.findByIdAndUpdate(data.id, userData);
                     console.log("User updated successfully");
                 } catch (err) {
