@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useAppContext } from '../../context/AppContext'
 
 
-const DashBoard = () => {
+const Dashboard = () => {
     const { currency, user, getToken, toast, axios } = useAppContext();
 
     const [dashboardData, setDashboardData] = useState({
@@ -110,4 +110,4 @@ const DashBoard = () => {
     )
 }
 
-export default DashBoard
+export default Dashboard
