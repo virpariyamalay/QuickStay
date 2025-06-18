@@ -8,7 +8,7 @@ const checkAvailability = async ({ checkInDate, checkOutDate, room }) => {
         const bookings = await Booking.find({
             room,
             checkInDate: { $lte: checkOutDate },
-            checkOutDate: { $gte: checkOutDate },
+            checkOutDate: { $gte: checkInDate },
         });
         const isAvailable = bookings.length === 0;
         return isAvailable;
@@ -18,6 +18,20 @@ const checkAvailability = async ({ checkInDate, checkOutDate, room }) => {
     }
 
 }
+// const checkAvailability = async ({ checkInDate, checkOutDate, room }) => {
+//   try {
+//     const bookings = await Booking.find({
+//       room,
+//       checkInDate: { $lte: checkOutDate },
+//       checkOutDate: { $gte: checkInDate }, // Fix: overlap condition
+//     });
+//     return bookings.length === 0;
+//   } catch (error) {
+//     console.error("Error in checkAvailability:", error.message);
+//     throw new Error("Failed to check availability");
+//   }
+// };
+
 
 //api to check availability of room
 //POST /api/bookings/check-availability
@@ -32,6 +46,17 @@ export const checkAvailabilityAPI = async (req, res) => {
 
     }
 }
+// export const checkAvailabilityAPI = async (req, res) => {
+//   try {
+//     const { room, checkInDate, checkOutDate } = req.body;
+//     const isAvailable = await checkAvailability({ checkInDate, checkOutDate, room });
+
+//     res.json({ success: true, isAvailable });
+//   } catch (error) {
+//     console.error("API Error:", error.message);
+//     res.status(500).json({ success: false, message: error.message });
+//   }
+// };
 
 
 //API to create a new booking
@@ -61,12 +86,12 @@ export const createBooking = async (req, res) => {
 
         totalPrice *= nights;
         const booking = await Booking.create({
-            user,
+            user: req.auth.userId,
             room,
             hotel: roomData.hotel._id,
             guests: +guests,
             checkInDate,
-            checkoutDate,
+            checkOutDate,
             totalPrice,
         })
         res.json({ success: true, message: "Booking Created Successfully" })
@@ -80,6 +105,42 @@ export const createBooking = async (req, res) => {
     }
 };
 
+// export const createBooking = async (req, res) => {
+//   try {
+//     const { room, checkInDate, checkOutDate, guests } = req.body;
+
+//     const isAvailable = await checkAvailability({ checkInDate, checkOutDate, room });
+//     if (!isAvailable) {
+//       return res.json({ success: false, message: "Room is not available" });
+//     }
+
+//     const roomData = await Room.findById(room).populate("hotel");
+//     if (!roomData) {
+//       console.error("Room not found");
+//       return res.status(404).json({ success: false, message: "Room not found" });
+//     }
+
+//     const checkIn = new Date(checkInDate);
+//     const checkOut = new Date(checkOutDate);
+//     const nights = Math.ceil((checkOut - checkIn) / (1000 * 3600 * 24));
+//     const totalPrice = roomData.pricePerNight * nights;
+
+//     const booking = await Booking.create({
+//       user: req.auth.userId, // ✅ FIX: You forgot to pass 'user' — probably this was the issue
+//       room,
+//       hotel: roomData.hotel._id,
+//       guests: +guests,
+//       checkInDate,
+//       checkOutDate, // ✅ Typo fix: this was wrongly spelled as `checkoutDate`
+//       totalPrice,
+//     });
+
+//     res.json({ success: true, message: "Booking Created Successfully" });
+//   } catch (error) {
+//     console.error("Create Booking Error:", error); // ✅ Show full error
+//     res.status(500).json({ success: false, message: "Failed to create booking" });
+//   }
+// };
 
 
 //API to get all bookings for a user
