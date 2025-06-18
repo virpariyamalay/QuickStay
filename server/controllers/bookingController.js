@@ -1,6 +1,7 @@
 import Booking from "../models/Booking.js"
 import Room from "../models/Room.js"
 import Hotel from "../models/Hotel.js"
+import transporter from "../configs/nodemailer.js";
 
 //function to check availability of room
 const checkAvailability = async ({ checkInDate, checkOutDate, room }) => {
@@ -66,6 +67,12 @@ export const createBooking = async (req, res) => {
     try {
         const { room, checkInDate, checkOutDate, guests } = req.body;
 
+        if (!req.user || !req.user.email || !req.user.username) {
+            return res.json({ success: false, message: "User data incomplete" });
+        }
+
+        const user = req.user._id;
+
         //before booking check availability
         const isAvailable = await checkAvailability({
             checkInDate,
@@ -85,8 +92,11 @@ export const createBooking = async (req, res) => {
         const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
         totalPrice *= nights;
+
+
         const booking = await Booking.create({
-            user: req.auth.userId,
+            // user: req.auth.userId,
+            user,
             room,
             hotel: roomData.hotel._id,
             guests: +guests,
@@ -94,6 +104,39 @@ export const createBooking = async (req, res) => {
             checkOutDate,
             totalPrice,
         })
+
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: req.user.email,
+            subject: "Hotel Booking Details",
+            html: `
+                <h2>Your Booking Details</h2>
+                <p>Dear ${req.user.username},</p>
+                <p>Thank you for your booking! Here are your details:</p>
+                <ul>
+                    <li><strong>Booking ID:</strong> ${booking._id}</li>
+                    <li><strong>Hotel Name:</strong> ${roomData.hotel.name}</li>
+                    <li><strong>Location:</strong> ${roomData.hotel.address}</li>
+                    <li><strong>Date:</strong> ${booking.checkInDate.toDateString()} to ${booking.checkOutDate.toDateString()}</li>
+                    <li><strong>Booking Amount:</strong> ₹ ${booking.totalPrice} /night</li>
+                 </ul>
+                 <p>We look forward to welcoming you!</p>
+                 <p>If you need to make any changes ,feel free to contact us.</p>
+            `
+        }
+
+        // await transporter.sendMail(mailOptions)
+        try {
+            await transporter.sendMail(mailOptions);
+            //   console.log("Email sent: ", info.response); // Add this
+            // console.log("Sending email to:", req.user.email);
+
+        } catch (emailError) {
+            console.error("Error sending email:", emailError);
+            // Don't fail the whole booking because of email
+        }
+
+
         res.json({ success: true, message: "Booking Created Successfully" })
 
 
@@ -157,23 +200,23 @@ export const getUserBookings = async (req, res) => {
     }
 }
 
-export const getHotelBookings = async(req,res)=>{
+export const getHotelBookings = async (req, res) => {
     try {
-        const hotel=await Hotel.findOne({owner:req.auth.userId});
-    if(!hotel){
-        return res.json({success:false,message:"No Hotel Found"})
-    }
+        const hotel = await Hotel.findOne({ owner: req.auth.userId });
+        if (!hotel) {
+            return res.json({ success: false, message: "No Hotel Found" })
+        }
 
-    const bookings= await Booking.find({hotel:hotel._id}).populate("room hotel user").sort({createdAt:-1})
+        const bookings = await Booking.find({ hotel: hotel._id }).populate("room hotel user").sort({ createdAt: -1 })
 
-    //total Bookings
-    const totalBookings=booking.length;
-    //total revenue
-    const totalRevenue=bookings.reduce((acc,booking)=>  acc + booking.totalPrice ,0)
+        //total Bookings
+        const totalBookings = booking.length;
+        //total revenue
+        const totalRevenue = bookings.reduce((acc, booking) => acc + booking.totalPrice, 0)
 
-    res.json({success:true,dashboardData:{totalBookings,totalRevenue,bookings}})
+        res.json({ success: true, dashboardData: { totalBookings, totalRevenue, bookings } })
     } catch (error) {
-            res.json({success:false,message:"failed to fetch booking"})
+        res.json({ success: false, message: "failed to fetch booking" })
 
     }
 }
