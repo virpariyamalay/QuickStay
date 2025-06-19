@@ -244,6 +244,8 @@ export const stripePayment = async (req,res)=>{
                 quantity:1, 
             }
         ]
+
+        console.log(bookingId)
         //Create Checkout Session
         const session= await stripeInstance.checkout.sessions.create({
             line_items,
