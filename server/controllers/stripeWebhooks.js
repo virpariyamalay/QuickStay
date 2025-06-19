@@ -12,26 +12,29 @@ export const stripeWebhooks = async (request, response) => {
     try {
         event = stripeInstance.webhooks.constructEvent(request.body, sig, process.env.STRIPE_WEBHOOK_SECRET)
     } catch (err) {
-        response.status(400).send(`Webhook Error:${err.message}`)
+        response.status(400).send(`Webhook Error: ${err.message}`);
+        return; // Stop further execution on error
     }
 
     //handle event
-    if (event.type === "payment_intent.succeeded") {
-        const paymentIntent = event.data.object;
-        const paymentIntentId = paymentIntent.id;
+    if (event.type === "checkout.session.completed") {
+        const session = event.data.object;
+        const { bookingId } = session.metadata || {};
 
-        //getting session metadata
-        const session = await stripeInstance.checkout.sessions.list({
-            payment_intent: paymentIntentId,
-        });
-        const { bookingId } = session.data[0].metadata;
+        if (!bookingId) {
+            console.error("Booking ID missing in session metadata");
+            return response.status(400).send("Booking ID missing in metadata");
+        }
 
-        //mark payment as paid
-        await Booking.findByIdAndUpdate(bookingId, { isPaid: true, paymentMethod: "stripe" })
+        try {
+            await Booking.findByIdAndUpdate(bookingId, { isPaid: true, paymentMethod: "stripe" });
+            console.log(`Booking ${bookingId} marked as paid.`);
+        } catch (error) {
+            console.error("Error updating booking payment status:", error);
+            return response.status(500).send("Failed to update booking payment status");
+        }
     } else {
-        console.log("Unhandled event type:", event.type)
+        console.log("Unhandled event type:", event.type);
     }
     response.json({ received: true });
 }
-
- 
