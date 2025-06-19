@@ -1,11 +1,10 @@
-
-
 import stripe from 'stripe'
 import { request, response } from 'express'
 import Booking from '../models/Booking.js';
 
 //Api to handle stripe webhooks
 export const stripeWebhooks = async (request, response) => {
+    console.log("[Clerk Webhook] Handler started", request.headers);
     //Stripe Gateway initialize
     const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
     const sig = request.headers['stripe-signature'];
