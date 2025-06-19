@@ -15,11 +15,16 @@ import { stripeWebhooks } from "./controllers/stripeWebhooks.js";
 connectDB();
 connectCloudinary();
 
-const app=express();
-app.use(cors())
+const app = express();
+app.use(cors({
+    origin: ["http://localhost:5173", "https://quickstay365.vercel.app"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
+}));
 
 //API to listen stripe webhooks
-app.post('/api/stripe',express.raw({type:"application/json"}),stripeWebhooks)
+app.post('/api/stripe', express.raw({ type: "application/json" }), stripeWebhooks)
 
 //middleware
 app.use(express.json());
@@ -28,18 +33,18 @@ app.use(clerkMiddleware())
 //api to listen to clerk webhook    
 app.use("/api/clerk", clerkWebhooks);
 
-app.use('/api/user',userRouter);
-app.use('/api/hotels',hotelRouter);
-app.use('/api/rooms',roomRouter);
-app.use('/api/bookings',bookingRouter);
-app.use('/',(req,res)=>{
+app.use('/api/user', userRouter);
+app.use('/api/hotels', hotelRouter);
+app.use('/api/rooms', roomRouter);
+app.use('/api/bookings', bookingRouter);
+app.use('/', (req, res) => {
     res.send('api is working');
 })
 
 
 
-const PORT=process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-app.listen(PORT,()=>{
+app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`);
 })
