@@ -21,11 +21,13 @@ export const protect = async (req, res, next) => {
     const { userId } = req.auth || {};
 
     if (!userId) {
+      // console.error("User ID not found in request auth");
       return res.status(401).json({ success: false, message: "Not authenticated" });
     }
 
     const user = await User.findById(userId);
     if (!user) {
+      // console.error("User not found with ID:", userId);
       return res.status(401).json({ success: false, message: "User not found" });
     }
 
