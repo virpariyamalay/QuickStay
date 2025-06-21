@@ -161,7 +161,7 @@ const RoomDetails = () => {
                 <p className='text-2xl font-medium'>₹{room.pricePerNight}/night</p>
             </div>
 
-           // check-in check-out form
+           
 
 
             <form onSubmit={onSubmitHandler} className='flex flex-col md:flex-row items-start md:items-center justify-between bg-white shadow-lg border border-gray-200 p-6 rounded-xl mx-auto mt-16 max-w-6xl'>
