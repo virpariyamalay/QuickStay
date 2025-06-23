@@ -1,16 +1,30 @@
 import mongoose from "mongoose";
 
-const connectDB = async () => {
-    try {
-        mongoose.connection.on('connected', () => {
-            console.log('database connected');
+const MONGODB_URI = process.env.MONGODB_URI?.includes('mongodb.net/')
+    ? process.env.MONGODB_URI
+    : `${process.env.MONGODB_URI}/hotel-booking`;
 
-        })
-        await mongoose.connect(`${process.env.MONGODB_URI}/hotel-booking`)
-
-    } catch (error) {
-        console.log(error);
-    }
+if (!MONGODB_URI) {
+    throw new Error('Please define the MONGODB_URI environment variable');
 }
+
+let cached = global.mongoose;
+if (!cached) {
+    cached = global.mongoose = { conn: null, promise: null };
+}
+
+const connectDB = async () => {
+    if (cached.conn) {
+        return cached.conn;
+    }
+    if (!cached.promise) {
+        cached.promise = mongoose.connect(MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        }).then((mongoose) => mongoose);
+    }
+    cached.conn = await cached.promise;
+    return cached.conn;
+};
 
 export default connectDB;
