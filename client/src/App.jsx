@@ -11,41 +11,47 @@ import Layout from './pages/hotelOwner/Layout';
 import Dashboard from './pages/hotelOwner/Dashboard';
 import AddRoom from './pages/hotelOwner/AddRoom';
 import ListRoom from './pages/hotelOwner/ListRoom';
-import {Toaster} from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 import { useAppContext } from './context/AppContext';
-import Loader from './components/Loader.jsx'; 
+import Loader from './components/Loader.jsx';
+import Contact from './pages/Contact';
+import About from './pages/About';
+
+
 // import Loader from './components/Loader.jsx';
 
 
 
 const App = () => {
-  const isownerpath =useLocation().pathname.includes('/owner');
-  const {showHotelReg}=useAppContext();
+  const isownerpath = useLocation().pathname.includes('/owner');
+  const { showHotelReg } = useAppContext();
 
   return (
     <div>
-      <Toaster/>
-      {!isownerpath && <Navbar/>}
-      {showHotelReg && <HotelReg/>}
+      <Toaster />
+      {!isownerpath && <Navbar />}
+      {showHotelReg && <HotelReg />}
       <div className='min-h-[70vh]'>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/rooms" element={<AllRooms />} />
-        <Route path="/rooms/:id" element={<RoomDetails />} />
-        <Route path="/my-bookings" element={<MyBookings />} />
-        <Route path='/loader/:nextUrl' element={<Loader/>} />
-        <Route path="/owner" element={<Layout/>}>
-            <Route index element={<Dashboard/>}/>
-            <Route path='add-room' element={<AddRoom/>}/>
-            <Route path='list-room' element={<ListRoom/>}/>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/rooms" element={<AllRooms />} />
+          <Route path="/rooms/:id" element={<RoomDetails />} />
+          <Route path="/my-bookings" element={<MyBookings />} />
+          <Route path='/loader/:nextUrl' element={<Loader />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/owner" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path='add-room' element={<AddRoom />} />
+            <Route path='list-room' element={<ListRoom />} />
 
-        </Route>
-        
+          </Route>
 
-        
-      </Routes>
+
+
+        </Routes>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   )
 }
