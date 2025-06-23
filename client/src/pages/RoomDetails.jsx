@@ -7,91 +7,91 @@ import toast from 'react-hot-toast';
 
 const RoomDetails = () => {
     const { id } = useParams();
-    const {rooms,getToken,axios,navigate}=useAppContext()
+    const { rooms, getToken, axios, navigate } = useAppContext()
     const [room, setRoom] = useState(null);
     const [mainImage, setMainImage] = useState(null);
-    const [checkInDate,setCheckInDate]=useState(null);
-    const [checkOutDate,setCheckOutDate]=useState(null);
-    const [guests,setGuests]=useState(1);
+    const [checkInDate, setCheckInDate] = useState(null);
+    const [checkOutDate, setCheckOutDate] = useState(null);
+    const [guests, setGuests] = useState(1);
 
-    const [isAvailable,setIsAvailable]=useState(false);
+    const [isAvailable, setIsAvailable] = useState(false);
 
     //check if the room is available
-    const checkAvailability =async () =>{
+    const checkAvailability = async () => {
         try {
             //check if checkin date is greater than checkout date
-            if(checkInDate >= checkOutDate){
+            if (checkInDate >= checkOutDate) {
                 toast.error('check-in date should be less than check-out date')
                 return;
             }
 
-            const {data}= await axios.post('/api/bookings/check-availability',{room:id,checkInDate,checkOutDate})
-            if(data.success){
-                if(data.isAvailable){
+            const { data } = await axios.post('/api/bookings/check-availability', { room: id, checkInDate, checkOutDate })
+            if (data.success) {
+                if (data.isAvailable) {
                     setIsAvailable(true)
                     toast.success('Room Is Available')
-                }else{
+                } else {
                     setIsAvailable(false)
                     toast.error('Room Is Not Available')
 
                 }
-            }else{
+            } else {
                 toast.error(data.message)
             }
-            
+
         } catch (error) {
-                toast.error(error.message)
+            toast.error(error.message)
 
         }
     }
 
-//    const checkAvailability = async () => {
-//   try {
-//     if (checkInDate >= checkOutDate) {
-//       toast.error('Check-in date should be less than check-out date');
-//       return;
-//     }
+    //    const checkAvailability = async () => {
+    //   try {
+    //     if (checkInDate >= checkOutDate) {
+    //       toast.error('Check-in date should be less than check-out date');
+    //       return;
+    //     }
 
-//     const { data } = await axios.post('/api/bookings/check-availability', {
-//       room: id,
-//       checkInDate,
-//       checkOutDate
-//     });
+    //     const { data } = await axios.post('/api/bookings/check-availability', {
+    //       room: id,
+    //       checkInDate,
+    //       checkOutDate
+    //     });
 
-//     if (data.success && typeof data.isAvailable === 'boolean') {
-//       if (data.isAvailable) {
-//         setIsAvailable(true);
-//         toast.success('Room is available ✅');
-//       } else {
-//         setIsAvailable(false);
-//         toast.error('Room is not available ❌');
-//       }
-//     } else {
-//       toast.error(data?.message || 'Unexpected error occurred ❌');
-//     }
+    //     if (data.success && typeof data.isAvailable === 'boolean') {
+    //       if (data.isAvailable) {
+    //         setIsAvailable(true);
+    //         toast.success('Room is available ✅');
+    //       } else {
+    //         setIsAvailable(false);
+    //         toast.error('Room is not available ❌');
+    //       }
+    //     } else {
+    //       toast.error(data?.message || 'Unexpected error occurred ❌');
+    //     }
 
-//   } catch (error) {
-//     console.error("Client Error:", error);
-//     toast.error(error?.response?.data?.message || 'Could not check availability ❌');
-//   }
-// };
+    //   } catch (error) {
+    //     console.error("Client Error:", error);
+    //     toast.error(error?.response?.data?.message || 'Could not check availability ❌');
+    //   }
+    // };
 
 
 
     //onsubmithandler function to check availability & book the room
-    const onSubmitHandler =async (e)=>{
+    const onSubmitHandler = async (e) => {
         try {
             e.preventDefault();
-            if(!isAvailable){
+            if (!isAvailable) {
                 return checkAvailability();
-            }else{
-                const {data}= await axios.post('/api/bookings/book',{room:id,checkInDate,checkOutDate,guests,paymentMethod:"Pay At Hotel"},
-                { headers: { Authorization: `Bearer ${await getToken()}` } })
-                if(data.success){
+            } else {
+                const { data } = await axios.post('/api/bookings/book', { room: id, checkInDate, checkOutDate, guests, paymentMethod: "Pay At Hotel" },
+                    { headers: { Authorization: `Bearer ${await getToken()}` } })
+                if (data.success) {
                     toast.success(data.message)
                     navigate('/my-bookings')
-                    scrollTo(0,0)
-                }else{
+                    scrollTo(0, 0)
+                } else {
                     toast.error(data.message)
                 }
             }
@@ -113,7 +113,7 @@ const RoomDetails = () => {
             {/* room details */}
             <div className='flex flex-col md:flex-row items-start  md:items-center gap-2'>
                 <h1 className='text-3xl md:text:4xl font-playfair'>
-                    {room.hotel.name} <span className='font-inter text-sm'>{room.roomType}</span></h1>
+                    {room.hotel?.name || "Unknown"} <span className='font-inter text-sm'>{room.roomType}</span></h1>
                 <p className='text-xs font-inter py-1.5 px-3 text-white bg-orange-500 rounded-full'>20% OFF</p>
             </div>
 
@@ -127,7 +127,7 @@ const RoomDetails = () => {
 
             <div className='flex items-center gap-1 text-gray-500 mt-2'>
                 <img src={assets.locationIcon} alt="location-icon" />
-                <span>{room.hotel.address}</span>
+                <span>{room.hotel?.address || "N/A"}</span>
             </div>
 
             {/* room images */}
@@ -161,7 +161,7 @@ const RoomDetails = () => {
                 <p className='text-2xl font-medium'>₹{room.pricePerNight}/night</p>
             </div>
 
-           
+
 
 
             <form onSubmit={onSubmitHandler} className='flex flex-col md:flex-row items-start md:items-center justify-between bg-white shadow-lg border border-gray-200 p-6 rounded-xl mx-auto mt-16 max-w-6xl'>
@@ -170,8 +170,8 @@ const RoomDetails = () => {
                     <div className='flex flex-col'>
                         <label htmlFor="checkInDate" className='font-semibold text-gray-600'>Check-In</label>
                         <input
-                            onChange={(e)=>setCheckInDate(e.target.value)}
-                            min={new Date().toISOString().split('T')[0]} 
+                            onChange={(e) => setCheckInDate(e.target.value)}
+                            min={new Date().toISOString().split('T')[0]}
                             type="date"
                             id="checkInDate"
                             className='w-full border border-gray-300 rounded-md px-3 py-2 mt-1.5 focus:ring-2 focus:ring-blue-500 outline-none'
@@ -184,7 +184,7 @@ const RoomDetails = () => {
                     <div className='flex flex-col'>
                         <label htmlFor="checkOutDate" className='font-semibold text-gray-600'>Check-Out</label>
                         <input
-                            onChange={(e)=>setCheckOutDate(e.target.value)}
+                            onChange={(e) => setCheckOutDate(e.target.value)}
                             min={checkInDate} disabled={!checkInDate}
                             type="date"
                             id="checkOutDate"
@@ -198,7 +198,7 @@ const RoomDetails = () => {
                     <div className='flex flex-col'>
                         <label htmlFor="guests" className='font-semibold text-gray-600'>Guests</label>
                         <input
-                            onChange={(e)=>setGuests(e.target.value)}
+                            onChange={(e) => setGuests(e.target.value)}
                             value={guests}
                             type="number"
                             id="guests"
@@ -244,11 +244,11 @@ const RoomDetails = () => {
             {/* Hosted by */}
             <div className='flex flex-col items-start gap-4'>
                 <div className='flex gap-4'>
-                    <img src={room.hotel.owner.image} alt="Host" className='w-16 h-16 md:h-18 md:w-18  rounded-full object-cover' />
+                    <img src={room.hotel?.owner?.image || "/default-host.png"} alt="Host" className='w-16 h-16 md:h-18 md:w-18  rounded-full object-cover' />
                     <div>
-                        <p className='text-lg md:text-xl'>Hosted By{room.hotel.name}</p>
+                        <p className='text-lg md:text-xl'>Hosted By {room.hotel?.name || "Unknown"}</p>
                         <div className='flex item-center mt-1'>
-                            <StarRating/>
+                            <StarRating />
                             <p className='ml-2'>200+ Reviews</p>
                         </div>
                     </div>
