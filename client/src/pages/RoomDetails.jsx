@@ -4,10 +4,12 @@ import { assets, facilityIcons, roomCommonData } from '../assets/assets';
 import StarRating from '../components/StarRating';
 import { useAppContext } from '../context/AppContext';
 import toast from 'react-hot-toast';
+import { useClerk } from '@clerk/clerk-react';
 
 const RoomDetails = () => {
     const { id } = useParams();
-    const { rooms, getToken, axios, navigate } = useAppContext()
+    const { rooms, getToken, axios, navigate, user } = useAppContext()
+    const { openSignIn } = useClerk();
     const [room, setRoom] = useState(null);
     const [mainImage, setMainImage] = useState(null);
     const [checkInDate, setCheckInDate] = useState(null);
@@ -82,6 +84,11 @@ const RoomDetails = () => {
     const onSubmitHandler = async (e) => {
         try {
             e.preventDefault();
+            if (!user) {
+                toast.error('You must be logged in to book a hotel. Please login or sign up first.');
+                openSignIn();
+                return;
+            }
             if (!isAvailable) {
                 return checkAvailability();
             } else {
@@ -96,7 +103,11 @@ const RoomDetails = () => {
                 }
             }
         } catch (error) {
-            toast.error(error.message)
+            if (error.response && error.response.status === 401) {
+                toast.error('You must be logged in to book a hotel. Please login or sign up first.');
+            } else {
+                toast.error(error.message)
+            }
         }
 
     }
