@@ -23,8 +23,17 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 }));
-// For development fallback (optional, remove in production)
-// app.use(cors());
+
+// Handle preflight requests globally
+app.options('*', cors());
+
+// CORS catch-all (ensures headers are set even if route is missed)
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "https://quickstay365.vercel.app");
+    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    next();
+});
 
 //API to listen stripe webhooks
 app.post('/api/stripe', express.raw({ type: "application/json" }), stripeWebhooks)
