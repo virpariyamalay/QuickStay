@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { assets, facilityIcons, roomsDummyData } from '../assets/assets'
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import StarRating from '../components/StarRating';
@@ -27,7 +27,7 @@ const RadioButton = ({ label, selected = false, onChange = () => { } }) => {
 const AllRooms = () => {
 
     const [searchParams, setSearchParams] = useSearchParams()
-    const { rooms, navigate } = useAppContext()
+    const { rooms, navigate, fetchRooms } = useAppContext()
     const [openFilters, setOpenFilters] = useState(false);
     const [selectedFilters, setSelectedFilters] = useState({
         roomTypes: [],
@@ -143,6 +143,10 @@ const AllRooms = () => {
         setSelectedSort('');
         setSearchParams({});
     }
+
+    useEffect(() => {
+        fetchRooms();
+    }, []);
 
     return (
         <div className='flex flex-col-reverse lg:flex-row item-start justify-between pt-28 md:pt-35 px-4 md:px-16 lg:px-24 xl:px-32'>

@@ -3,10 +3,12 @@ import Title from '../../components/Title'
 import { assets } from '../../assets/assets'
 import { useAppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
+import { useOutletContext, useNavigate } from 'react-router-dom'
 
 const AddRoom = () => {
-  const { axios, getToken } = useAppContext()
-
+  const { axios, getToken, fetchRooms: globalFetchRooms } = useAppContext()
+  const { fetchRooms } = useOutletContext();
+  const navigate = useNavigate();
 
   const [images, setImages] = useState({
     1: null,
@@ -57,6 +59,7 @@ const AddRoom = () => {
       )
       if (data.success) {
         toast.success(data.message)
+        navigate('/rooms');
         setInputs({
           roomType: '',
           pricePerNight: 0,
@@ -74,14 +77,16 @@ const AddRoom = () => {
           3: null,
           4: null
         })
+        fetchRooms();
+        globalFetchRooms && globalFetchRooms();
       } else {
         toast.error(data.message);
 
       }
     } catch (error) {
-        toast.error(error.message);
+      toast.error(error.message);
 
-    }finally{
+    } finally {
       setLoading(false);
     }
   }
