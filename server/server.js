@@ -16,12 +16,15 @@ connectDB();
 connectCloudinary();
 
 const app = express();
+// CORS configuration: allow frontend and local dev
 app.use(cors({
     origin: ["http://localhost:5173", "https://quickstay365.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 }));
+// For development fallback (optional, remove in production)
+// app.use(cors());
 
 //API to listen stripe webhooks
 app.post('/api/stripe', express.raw({ type: "application/json" }), stripeWebhooks)
