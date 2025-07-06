@@ -10,6 +10,7 @@ const AddRoom = () => {
   const { fetchRooms } = useOutletContext();
   const navigate = useNavigate();
 
+
   const [images, setImages] = useState({
     1: null,
     2: null,
@@ -71,22 +72,23 @@ const AddRoom = () => {
             'Pool Access': false
           }
         })
+        
         setImages({
           1: null,
           2: null,
           3: null,
           4: null
         })
-        fetchRooms();
+          fetchRooms();
         globalFetchRooms && globalFetchRooms();
       } else {
         toast.error(data.message);
 
       }
     } catch (error) {
-      toast.error(error.message);
+        toast.error(error.message);
 
-    } finally {
+    }finally{
       setLoading(false);
     }
   }

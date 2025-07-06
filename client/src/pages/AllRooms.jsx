@@ -27,7 +27,7 @@ const RadioButton = ({ label, selected = false, onChange = () => { } }) => {
 const AllRooms = () => {
 
     const [searchParams, setSearchParams] = useSearchParams()
-    const { rooms, navigate, fetchRooms } = useAppContext()
+     const { rooms, navigate, fetchRooms } = useAppContext()
     const [openFilters, setOpenFilters] = useState(false);
     const [selectedFilters, setSelectedFilters] = useState({
         roomTypes: [],
@@ -144,9 +144,10 @@ const AllRooms = () => {
         setSearchParams({});
     }
 
-    useEffect(() => {
+       useEffect(() => {
         fetchRooms();
     }, []);
+
 
     return (
         <div className='flex flex-col-reverse lg:flex-row item-start justify-between pt-28 md:pt-35 px-4 md:px-16 lg:px-24 xl:px-32'>
@@ -164,19 +165,20 @@ const AllRooms = () => {
                         <div className='md:w-1/2 flex flex-col gap-2'>
                             <p className='text-gray-500'>{room.hotel?.city || "N/A"}</p>
                             <p onClick={() => { navigate(`/rooms/${room._id}`), scrollTo(0, 0) }}
-                                className='text-gray-800 text-3xl font-playfair cursor-pointer'>{room.hotel?.name || "Unknown"}</p>
+                                className='text-gray-800 text-3xl font-playfair cursor-pointer'>{room.hotel?.name || "Unknown"}
+                                </p>
                             <div className='flex items-center '>
                                 <StarRating />
                                 <p className='ml-2'>200+ reviews</p>
                             </div>
                             <div className='flex items-center gap-1 text-gray-500 mt-2 text-sm'>
                                 <img src={assets.locationIcon} alt="location-icon" />
-                                <span>{room.hotel?.address || "N/A"}</span>
+                                   <span>{room.hotel?.address || "N/A"}</span>
                             </div>
 
                             {/* room eminities */}
                             <div className='flex flex-wrap items-center mt-3 mb-6 gap-4'>
-                                {room.amenities.map((item, index) => {
+                                    {room.amenities.map((item, index) => {
                                     // Normalize amenity name for icon lookup
                                     const normalized = item.replace(/\s+/g, ' ').replace(/breakfast/i, 'Breakfast').replace(/wifi/i, 'WiFi').trim();
                                     const icon = facilityIcons[item] || facilityIcons[normalized] || assets.roomServiceIcon;

@@ -9,7 +9,7 @@ const Layout = () => {
   const { isOwner, navigate, axios, getToken, user } = useAppContext()
   const [rooms, setRooms] = useState([])
 
-  // Fetch rooms for the hotel owner
+   // Fetch rooms for the hotel ownerAdd commentMore actions
   const fetchRooms = useCallback(async () => {
     try {
       const { data } = await axios.get('/api/rooms/owner',
@@ -28,21 +28,21 @@ const Layout = () => {
     }
   }, [user, fetchRooms])
 
-  useEffect(() => {
-    if (!isOwner) {
+  useEffect(()=>{
+    if(!isOwner){
       navigate('/')
     }
-  }, [isOwner])
+  },[isOwner])
 
   return (
     <div className='flex flex-col h-screen'>
-      <Navbar />
+            <Navbar />
       <div className='flex h-full'>
         <Sidebar />
         <div className='flex-1 p-4 pt-10 md:px-10 h-full'>
           <Outlet context={{ rooms, setRooms, fetchRooms }} />
         </div>
-      </div>
+          </div>
     </div>
   )
 }

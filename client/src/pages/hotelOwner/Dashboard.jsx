@@ -31,7 +31,7 @@ const Dashboard = () => {
         }
     }
     useEffect(() => {
-
+      
         if (user) {
             fetchDashboardData();
         }
@@ -84,7 +84,7 @@ const Dashboard = () => {
                         {dashboardData.bookings.map((item, index) => (
                             <tr key={index}>
                                 <td className='py-3 px-4 text-gray-700 border-t border-gray-300'>
-                                    {item.user ? item.user.username : "Unknown User"}
+                                       {item.user ? item.user.username : "Unknown User"}
                                 </td>
                                 <td className='py-3 px-4 text-gray-700 border-t border-gray-300'>
                                     {item.room.roomType}

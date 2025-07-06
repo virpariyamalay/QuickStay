@@ -214,6 +214,8 @@ const RoomDetails = () => {
                     <div className='flex flex-col'>
                         <label htmlFor="guests" className='font-semibold text-gray-600'>Guests</label>
                         <input
+                            min={1}
+                            max={2}
                             onChange={(e) => setGuests(e.target.value)}
                             value={guests}
                             type="number"

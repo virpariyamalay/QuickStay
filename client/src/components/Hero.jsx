@@ -233,7 +233,7 @@ const Hero = () => {
           </div>
           <input
             min={1}
-            max={4}
+            max={2}
             value={guests}
             onChange={(e) => setGuests(e.target.value)}
             id="guests"

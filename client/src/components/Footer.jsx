@@ -12,7 +12,7 @@ const Footer = () => {
                     </p>
                     <div className='flex items-center gap-3 mt-4'>
                         <img src={assets.instagramIcon} alt="instagram-icon" className='w-6 cursor-pointer' />
-                        <img src={assets.facebookIcon} alt="facebook-icon" className='w-6 cursor-pointer'  />
+                        <img src={assets.facebookIcon} alt="facebook-icon" className='w-6 cursor-pointer' />
                         <img src={assets.twitterIcon} alt="twitter-icon" className='w-6 cursor-pointer' />
                         <img src={assets.linkendinIcon} alt="linkdine-icon" className='w-6 cursor-pointer' />
 
@@ -23,11 +23,11 @@ const Footer = () => {
                 <div>
                     <p className=' font-playfair text-lg text-gray-800'>COMPANY</p>
                     <ul className='mt-3 flex flex-col gap-2 text-sm'>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Partners</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/rooms">Hotels</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        {/* <li><a href="#">Partners</a></li> */}
                     </ul>
                 </div>
 
@@ -50,7 +50,7 @@ const Footer = () => {
                     <div className='flex items-center mt-4'>
                         <input type="text" className='bg-white rounded-l border border-gray-300 h-9 px-3 outline-none' placeholder='Your email' />
                         <button className='flex items-center justify-center bg-black h-9 w-9 aspect-square rounded-r'>
-                           <img src={assets.arrowIcon} alt="arrow-icon" className='w-3.5 invert cursor-pointer ' />
+                            <img src={assets.arrowIcon} alt="arrow-icon" className='w-3.5 invert cursor-pointer ' />
                         </button>
                     </div>
                 </div>
