@@ -271,7 +271,13 @@ const RoomDetails = () => {
                         </div>
                     </div>
                 </div>
-                <button className='px-6 py-2.5 rounded text-white bg-primary hover:bg-primary-dull transition-all cursor-pointer'>Contact Now</button>
+                {room.hotel?.contact ? (
+                    <a href={`tel:${room.hotel.contact}`}>
+                        <button className='px-6 py-2.5 rounded text-white bg-primary hover:bg-primary-dull transition-all cursor-pointer'>Contact Now</button>
+                    </a>
+                ) : (
+                    <button className='px-6 py-2.5 rounded text-white bg-primary hover:bg-primary-dull transition-all cursor-not-allowed' disabled>Contact Now</button>
+                )}
             </div>
 
 
