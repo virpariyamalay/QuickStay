@@ -106,25 +106,87 @@ export const createBooking = async (req, res) => {
             totalPrice,
         })
 
+        // const mailOptions = {
+        //     from: process.env.SENDER_EMAIL,
+        //     to: req.user.email,
+        //     subject: "Hotel Booking Details",
+        //     html: `
+        //         <h2>Your Booking Details</h2>
+        //         <p>Dear ${req.user.username},</p>
+        //         <p>Thank you for your booking! Here are your details:</p>
+        //         <ul>
+        //             <li><strong>Booking ID:</strong> ${booking._id}</li>
+        //             <li><strong>Hotel Name:</strong> ${roomData.hotel.name}</li>
+        //             <li><strong>Location:</strong> ${roomData.hotel.address}</li>
+        //             <li><strong>Date:</strong> ${booking.checkInDate.toDateString()} to ${booking.checkOutDate.toDateString()}</li>
+        //             <li><strong>Booking Amount:</strong> ₹ ${booking.totalPrice} /night</li>
+        //          </ul>
+        //          <p>We look forward to welcoming you!</p>
+        //          <p>If you need to make any changes ,feel free to contact us.</p>
+        //     `
+        // }
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: req.user.email,
-            subject: "Hotel Booking Details",
+            subject: "✅ Booking Confirmed — QuickStay Hotel Reservation",
             html: `
-                <h2>Your Booking Details</h2>
-                <p>Dear ${req.user.username},</p>
-                <p>Thank you for your booking! Here are your details:</p>
-                <ul>
-                    <li><strong>Booking ID:</strong> ${booking._id}</li>
-                    <li><strong>Hotel Name:</strong> ${roomData.hotel.name}</li>
-                    <li><strong>Location:</strong> ${roomData.hotel.address}</li>
-                    <li><strong>Date:</strong> ${booking.checkInDate.toDateString()} to ${booking.checkOutDate.toDateString()}</li>
-                    <li><strong>Booking Amount:</strong> ₹ ${booking.totalPrice} /night</li>
-                 </ul>
-                 <p>We look forward to welcoming you!</p>
-                 <p>If you need to make any changes ,feel free to contact us.</p>
-            `
-        }
+  <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f7f7f7; padding: 30px;">
+    <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+      
+      <!-- Header -->
+      <div style="background-color: #007B5E; padding: 20px; text-align: center; color: white;">
+        <h1 style="margin: 0; font-size: 26px;">Your Booking is Confirmed!</h1>
+        <p style="margin: 5px 0 0;">Thank you for choosing QuickStay</p>
+      </div>
+      
+      <!-- Booking Details -->
+      <div style="padding: 30px;">
+        <p style="font-size: 16px;">Hi <strong>${req.user.username}</strong>,</p>
+        <p>We’re delighted to confirm your booking. Below are your reservation details:</p>
+        
+        <div style="background-color: #f2f2f2; padding: 20px; border-radius: 8px; margin-top: 20px;">
+          <table style="width: 100%; font-size: 15px;">
+            <tr>
+              <td style="padding: 8px 0;"><strong>Hotel Name:</strong></td>
+              <td style="padding: 8px 0;">${roomData.hotel.name}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Location:</strong></td>
+              <td style="padding: 8px 0;">${roomData.hotel.address}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Check-In:</strong></td>
+              <td style="padding: 8px 0;">${booking.checkInDate.toDateString()}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Check-Out:</strong></td>
+              <td style="padding: 8px 0;">${booking.checkOutDate.toDateString()}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0;"><strong>Amount:</strong></td>
+              <td style="padding: 8px 0;">$${booking.totalPrice} / night</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- CTA -->
+        
+
+        <!-- Message -->
+        <p style="font-size: 15px;">We look forward to welcoming you at <strong>${roomData.hotel.name}</strong>. If you have any questions or need to make changes, feel free to <a href="#" style="color: #007B5E; text-decoration: none;">contact us</a>.</p>
+      </div>
+
+      <!-- Footer -->
+      <div style="background-color: #f1f1f1; text-align: center; padding: 20px; font-size: 13px; color: #555;">
+        <p style="margin: 0;">Need help? <a href="#" style="color: #007B5E;">Visit Support</a> or email us at <a href="mailto:support@quickstay.com" style="color: #007B5E;">support@quickstay.com</a></p>
+        <p style="margin: 10px 0 0;">© ${new Date().getFullYear()} QuickStay. All rights reserved.</p>
+      </div>
+
+    </div>
+  </div>
+  `
+        };
+
 
         // await transporter.sendMail(mailOptions)
         try {
