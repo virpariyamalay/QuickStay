@@ -22,13 +22,13 @@
 
 ---
 
-## ✨ Project Description
+##  Project Description
 
 **QuickStay** is a full-stack, modern hotel booking platform designed for seamless stays and effortless management. It empowers users to discover, book, and manage hotel rooms with ease, while providing hotel owners with robust tools to manage listings, bookings, and revenue. With a beautiful, responsive UI and real-time features, QuickStay delivers a premium experience for both guests and hosts.
 
 ---
 
-## 🚀 Features
+##  Features
 - 🔐 Secure user authentication (Clerk)
 - 🏨 Browse, search, and filter hotels and rooms
 - 📅 Real-time room availability check
@@ -42,7 +42,7 @@
 
 ---
 
-## 🗺️ Workflow Overview
+##  Workflow Overview
 
 Below is a refined workflow of the QuickStay platform, illustrating the user and admin journey, including login, booking, payment, and admin management steps:
 
@@ -72,7 +72,7 @@ graph TD
 
 ---
 
-## 📸 Screenshots
+##  Screenshots
 
 ### 1. Login
 ![Login Page](client/screenshots/login-page.png)
@@ -111,7 +111,7 @@ graph TD
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 **Frontend:**
 - React (Vite)
@@ -132,7 +132,7 @@ graph TD
 
 ---
 
-## 📂 File Structure
+##  File Structure
 ```
 QuickStay/
   ├── client/
@@ -159,7 +159,7 @@ QuickStay/
 
 ---
 
-## 🏁 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - Node.js & npm
@@ -188,7 +188,7 @@ QuickStay/
 
 ---
 
-## 💡 Usage
+##  Usage
 - Register or log in as a user or hotel owner
 - Browse hotels and rooms
 - Check room availability and book
@@ -198,30 +198,30 @@ QuickStay/
 
 ---
 
-## 📚 API Overview
+## API Overview
 - RESTful endpoints for hotels, rooms, bookings, and users
 - JWT-based authentication for protected routes
 - Webhooks for Stripe and email notifications
 
 ---
 
-## ❓ FAQ
+##  FAQ
 **Q: Is there a mobile app?**  
 A: Not yet, but the web app is fully responsive.
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
 ---
 
-## 📬 Contact
+##  Contact
 For questions or feedback, reach out at [malayvirpariya2026@gmail.com](mailto:malayvirpariya2026@gmail.com).
 
 ---
 
-## 🙏 Credits
+##  Credits
 - [Clerk](https://clerk.dev/) for authentication
 - [Stripe](https://stripe.com/) for payments
 - [Cloudinary](https://cloudinary.com/) for image hosting
